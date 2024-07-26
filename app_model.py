@@ -8,11 +8,11 @@ from sklearn.metrics import mean_squared_error, mean_absolute_percentage_error
 import numpy as np
 
 # os.chdir(os.path.dirname(__file__))
-root_path = '/home/raqueljulian/sales_2/'
-
 
 app = Flask(__name__)
 app.config['DEBUG'] = True
+
+root_path = '/home/raqueljulian/sales_2/'
 
 # Enruta la landing page (endpoint /)
 @app.route("/", methods = ["GET"])
@@ -35,7 +35,7 @@ def predict(): # Ligado al endpoint '/api/v1/predict', con el método GET
         return "Args empty, the data are not enough to predict"
     else:
         prediction = model.predict([[float(tv),float(radio),float(newspaper)]])
-    
+
     return jsonify({'predictions': prediction[0]})
 
 
@@ -62,4 +62,5 @@ def retrain(): # Rutarlo al endpoint '/api/v1/retrain/', metodo GET
         return f"<h2>New data for retrain NOT FOUND. Nothing done!</h2>"
 
 
-app.run()
+if __name__ == '__main__':
+    app.run()

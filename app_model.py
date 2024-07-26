@@ -8,6 +8,8 @@ from sklearn.metrics import mean_squared_error, mean_absolute_percentage_error
 import numpy as np
 
 # os.chdir(os.path.dirname(__file__))
+root_path = '/home/raqueljulian/sales_2/'
+
 
 app = Flask(__name__)
 app.config['DEBUG'] = True
@@ -21,7 +23,7 @@ def hello(): # Ligado al endopoint "/" o sea el home, con el método GET
 @app.route("/api/v1/predict", methods = ["GET"])
 def predict(): # Ligado al endpoint '/api/v1/predict', con el método GET
 
-    model = pickle.load(open('ad_model.pkl','rb'))
+    model = pickle.load(open(root_path + 'ad_model.pkl','rb'))
     tv = request.args.get('tv', 0)
     radio = request.args.get('radio', 0)
     newspaper = request.args.get('newspaper', 0)
@@ -53,7 +55,7 @@ def retrain(): # Rutarlo al endpoint '/api/v1/retrain/', metodo GET
         rmse = np.sqrt(mean_squared_error(y_test, model.predict(X_test)))
         mape = mean_absolute_percentage_error(y_test, model.predict(X_test))
         model.fit(data.drop(columns=['sales']), data['sales'])
-        pickle.dump(model, open('ad_model.pkl', 'wb'))
+        pickle.dump(model, open(root_path + 'ad_model.pkl', 'wb'))
 
         return f"Model retrained. New evaluation metric RMSE: {str(rmse)}, MAPE: {str(mape)}"
     else:
